@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { compare, debounce, getTodos } from './Utils/Functions'
-import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import EditTodoModal from './Components/EditTodoModal'
 import { priority } from './Utils/Constants'
+import Table from './Components/Table'
 
 const App = () => {
     const [todos, setTodos] = useState<Todos[]>([])
@@ -138,6 +138,7 @@ const App = () => {
                     <input type="text" id="jobName" ref={inputTitle} />
                     <label htmlFor="jobPriority">Job Priority</label>
                     <select ref={inputPriority} id="jobPriority">
+                        <option value="">Choose</option>
                         {priority &&
                             priority.map((item) => (
                                 <option key={item?.value} value={item?.value}>
@@ -168,40 +169,11 @@ const App = () => {
                             </option>
                         ))}
                 </select>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Priority</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {todos &&
-                            todos.map((item, index) => (
-                                <tr key={index}>
-                                    <td>{item?.title}</td>
-                                    <td>
-                                        {item?.priority === '1'
-                                            ? 'Urgent'
-                                            : item?.priority === '2'
-                                            ? 'Regular'
-                                            : 'Trivial'}
-                                    </td>
-                                    <td>
-                                        <button onClick={() => editTodo(index)}>
-                                            <FaPencilAlt />
-                                        </button>
-                                        <button
-                                            onClick={() => removeTodo(index)}
-                                        >
-                                            <FaTrashAlt />
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                    </tbody>
-                </table>
+                <Table
+                    todos={todos}
+                    editTodo={editTodo}
+                    removeTodo={removeTodo}
+                />
             </div>
         </>
     )
