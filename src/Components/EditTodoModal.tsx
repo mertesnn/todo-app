@@ -1,15 +1,6 @@
-import { LegacyRef } from 'react'
 import { priority } from 'src/Utils/Constants'
 
-const EditTodoModal = ({
-    todos,
-    index,
-    modalPriority,
-}: {
-    todos: Todos[]
-    index: number
-    modalPriority: LegacyRef<HTMLSelectElement> | undefined
-}) => {
+const EditTodoModal = ({ todos, index, modalPriority }: TodoModalProps) => {
     return (
         <>
             <label

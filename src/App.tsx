@@ -6,6 +6,8 @@ import withReactContent from 'sweetalert2-react-content'
 import EditTodoModal from './Components/EditTodoModal'
 import { priority } from './Utils/Constants'
 import Table from './Components/Table'
+import { Container, GlobalStyles } from './Styles/Main'
+import Header from './Components/Header'
 
 const App = () => {
     const [todos, setTodos] = useState<Todos[]>([])
@@ -125,14 +127,11 @@ const App = () => {
     }
 
     return (
-        <>
-            <div className="header">
-                <h1>Logo</h1>
-                <hr />
-            </div>
+        <Container>
+            <GlobalStyles />
+            <Header />
             <div className="newJob">
                 <h2>Create New Job</h2>
-                <hr />
                 <form onSubmit={handleSubmit(debounce(addTodo, 1000))}>
                     <label htmlFor="jobName">Job Name</label>
                     <input type="text" id="jobName" ref={inputTitle} />
@@ -149,33 +148,16 @@ const App = () => {
                     <button type="submit">Create</button>
                 </form>
             </div>
-            <div className="jobList">
-                <h2>Job List</h2>
-                <input
-                    type="text"
-                    placeholder="Job Name"
-                    ref={searchByTitleInput}
-                    onChange={debounce(searchByTitle, 1000)}
-                />
-                <select
-                    ref={searchByPriorityInput}
-                    onChange={debounce(searchByPriority, 1000)}
-                >
-                    <option value="">Priority(All)</option>
-                    {priority &&
-                        priority.map((item) => (
-                            <option key={item?.value} value={item?.value}>
-                                {item?.text}
-                            </option>
-                        ))}
-                </select>
-                <Table
-                    todos={todos}
-                    editTodo={editTodo}
-                    removeTodo={removeTodo}
-                />
-            </div>
-        </>
+            <Table
+                todos={todos}
+                editTodo={editTodo}
+                removeTodo={removeTodo}
+                searchByPriority={searchByPriority}
+                searchByPriorityInput={searchByPriorityInput}
+                searchByTitle={searchByTitle}
+                searchByTitleInput={searchByPriorityInput}
+            />
+        </Container>
     )
 }
 
