@@ -8,6 +8,7 @@ import { priority } from './Utils/Constants'
 import Table from './Components/Table'
 import { Container, GlobalStyles } from './Styles/Main'
 import Header from './Components/Header'
+import Footer from './Components/Footer'
 
 const App = () => {
     const [todos, setTodos] = useState<Todos[]>([])
@@ -157,6 +158,7 @@ const App = () => {
                 searchByTitle={searchByTitle}
                 searchByTitleInput={searchByPriorityInput}
             />
+            <Footer />
         </Container>
     )
 }

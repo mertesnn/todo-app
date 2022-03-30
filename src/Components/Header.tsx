@@ -1,11 +1,11 @@
-import { HorizontalLine } from 'src/Styles/Main'
+import { Head, HorizontalLine } from 'src/Styles/Main'
 
 const Header = () => {
     return (
-        <div>
+        <Head>
             <h1>Logo</h1>
             <HorizontalLine />
-        </div>
+        </Head>
     )
 }
 
