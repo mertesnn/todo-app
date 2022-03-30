@@ -12,6 +12,7 @@ const App = () => {
     const inputTitle = useRef<HTMLInputElement | null>(null)
     const inputPriority = useRef<HTMLSelectElement | null>(null)
     const modalPriority = useRef<HTMLSelectElement | null>(null)
+    const searchInput = useRef<HTMLInputElement | null>(null)
     const { handleSubmit } = useForm<Todos>()
     const MySwal = withReactContent(Swal)
 
@@ -31,7 +32,7 @@ const App = () => {
 
         // Save Todos
         setTodos(compare(insert))
-        localStorage.setItem('todos', JSON.stringify(todos))
+        localStorage.setItem('todos', JSON.stringify(compare(insert)))
 
         // Clear inputs
         if (inputTitle.current?.value) inputTitle.current.value = ''
@@ -88,13 +89,27 @@ const App = () => {
             todos[index]!.priority = formValues[0]
 
             setTodos(compare(todos))
-            localStorage.setItem('todos', JSON.stringify([...todos]))
+            localStorage.setItem('todos', JSON.stringify(compare(todos)))
             await MySwal.fire({
                 title: 'Success',
                 text: 'Updated successfully!',
                 icon: 'success',
             })
         }
+    }
+
+    const search = () => {
+        const existingTodos = localStorage.getItem('todos')
+        const allTodos: Todos[] = existingTodos && JSON.parse(existingTodos)
+        const searchKey = searchInput?.current?.value
+        setTodos(
+            allTodos &&
+                allTodos.filter((item) =>
+                    item?.title
+                        ?.toLowerCase()
+                        ?.includes(searchKey ? searchKey?.toLowerCase() : '')
+                )
+        )
     }
 
     return (
@@ -113,7 +128,7 @@ const App = () => {
                     <select ref={inputPriority} id="jobPriority">
                         {priority &&
                             priority.map((item) => (
-                                <option value={item?.value}>
+                                <option key={item?.value} value={item?.value}>
                                     {item?.text}
                                 </option>
                             ))}
@@ -123,6 +138,12 @@ const App = () => {
             </div>
             <div className="jobList">
                 <h2>Job List</h2>
+                <input
+                    type="text"
+                    placeholder="Job Name"
+                    ref={searchInput}
+                    onChange={debounce(search, 1000)}
+                />
                 <table>
                     <thead>
                         <tr>

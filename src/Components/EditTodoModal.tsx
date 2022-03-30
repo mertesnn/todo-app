@@ -51,7 +51,9 @@ const EditTodoModal = ({
             >
                 {priority &&
                     priority.map((item) => (
-                        <option value={item?.value}>{item?.text}</option>
+                        <option key={item?.value} value={item?.value}>
+                            {item?.text}
+                        </option>
                     ))}
             </select>
         </>
