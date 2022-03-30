@@ -1,4 +1,5 @@
 import { LegacyRef } from 'react'
+import { priority } from 'src/Utils/Constants'
 
 const EditTodoModal = ({
     todos,
@@ -48,9 +49,10 @@ const EditTodoModal = ({
                         : '3'
                 }
             >
-                <option value="1">Urgent</option>
-                <option value="2">Regular</option>
-                <option value="3">Trivial</option>
+                {priority &&
+                    priority.map((item) => (
+                        <option value={item?.value}>{item?.text}</option>
+                    ))}
             </select>
         </>
     )

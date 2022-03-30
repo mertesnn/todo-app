@@ -5,6 +5,7 @@ import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import EditTodoModal from './Components/EditTodoModal'
+import { priority } from './Utils/Constants'
 
 const App = () => {
     const [todos, setTodos] = useState<Todos[]>([])
@@ -28,12 +29,9 @@ const App = () => {
             },
         ]
 
-        // Sort Todos
-        insert.sort(compare)
-
         // Save Todos
-        setTodos(insert)
-        localStorage.setItem('todos', JSON.stringify(insert))
+        setTodos(compare(insert))
+        localStorage.setItem('todos', JSON.stringify(todos))
 
         // Clear inputs
         if (inputTitle.current?.value) inputTitle.current.value = ''
@@ -88,7 +86,8 @@ const App = () => {
 
         if (formValues) {
             todos[index]!.priority = formValues[0]
-            setTodos([...todos])
+
+            setTodos(compare(todos))
             localStorage.setItem('todos', JSON.stringify([...todos]))
             await MySwal.fire({
                 title: 'Success',
@@ -112,10 +111,12 @@ const App = () => {
                     <input type="text" id="jobName" ref={inputTitle} />
                     <label htmlFor="jobPriority">Job Priority</label>
                     <select ref={inputPriority} id="jobPriority">
-                        <option value="0">Choose</option>
-                        <option value="1">Urgent</option>
-                        <option value="2">Regular</option>
-                        <option value="3">Trivial</option>
+                        {priority &&
+                            priority.map((item) => (
+                                <option value={item?.value}>
+                                    {item?.text}
+                                </option>
+                            ))}
                     </select>
                     <button type="submit">Create</button>
                 </form>
