@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { compare, debounce } from './Utils/Functions'
+import { compare, debounce, getTodos } from './Utils/Functions'
 import { FaPencilAlt, FaTrashAlt } from 'react-icons/fa'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
@@ -12,13 +12,13 @@ const App = () => {
     const inputTitle = useRef<HTMLInputElement | null>(null)
     const inputPriority = useRef<HTMLSelectElement | null>(null)
     const modalPriority = useRef<HTMLSelectElement | null>(null)
-    const searchInput = useRef<HTMLInputElement | null>(null)
+    const searchByTitleInput = useRef<HTMLInputElement | null>(null)
+    const searchByPriorityInput = useRef<HTMLSelectElement | null>(null)
     const { handleSubmit } = useForm<Todos>()
     const MySwal = withReactContent(Swal)
 
     useEffect(() => {
-        const existingTodos = localStorage.getItem('todos')
-        setTodos(existingTodos ? JSON.parse(existingTodos) : [])
+        setTodos(getTodos())
     }, [])
 
     const addTodo: SubmitHandler<Todos> = () => {
@@ -98,16 +98,28 @@ const App = () => {
         }
     }
 
-    const search = () => {
-        const existingTodos = localStorage.getItem('todos')
-        const allTodos: Todos[] = existingTodos && JSON.parse(existingTodos)
-        const searchKey = searchInput?.current?.value
+    const searchByTitle = () => {
+        const allTodos: Todos[] = getTodos()
+        const searchKey = searchByTitleInput?.current?.value
+
         setTodos(
             allTodos &&
                 allTodos.filter((item) =>
                     item?.title
                         ?.toLowerCase()
                         ?.includes(searchKey ? searchKey?.toLowerCase() : '')
+                )
+        )
+    }
+
+    const searchByPriority = () => {
+        const allTodos: Todos[] = getTodos()
+        const searchKey = searchByPriorityInput?.current?.value
+
+        setTodos(
+            allTodos &&
+                allTodos.filter((item) =>
+                    item?.priority?.includes(searchKey ? searchKey : '')
                 )
         )
     }
@@ -141,9 +153,21 @@ const App = () => {
                 <input
                     type="text"
                     placeholder="Job Name"
-                    ref={searchInput}
-                    onChange={debounce(search, 1000)}
+                    ref={searchByTitleInput}
+                    onChange={debounce(searchByTitle, 1000)}
                 />
+                <select
+                    ref={searchByPriorityInput}
+                    onChange={debounce(searchByPriority, 1000)}
+                >
+                    <option value="">Priority(All)</option>
+                    {priority &&
+                        priority.map((item) => (
+                            <option key={item?.value} value={item?.value}>
+                                {item?.text}
+                            </option>
+                        ))}
+                </select>
                 <table>
                     <thead>
                         <tr>

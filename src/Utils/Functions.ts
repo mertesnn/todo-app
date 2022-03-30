@@ -41,3 +41,8 @@ export const compare = (item: Todos[]) => {
         ...trivial.sort(compareTitle),
     ]
 }
+
+export const getTodos = () => {
+    const existingTodos = localStorage.getItem('todos')
+    return existingTodos && JSON.parse(existingTodos)
+}
