@@ -6,9 +6,20 @@ import withReactContent from 'sweetalert2-react-content'
 import EditTodoModal from './Components/EditTodoModal'
 import { priority } from './Utils/Constants'
 import Table from './Components/Table'
-import { Container, GlobalStyles } from './Styles/Main'
+import {
+    Button,
+    Center,
+    Container,
+    CreateNewJob,
+    GlobalStyles,
+    GridTwo,
+    Input,
+    JobName,
+    Select,
+} from './Styles/Main'
 import Header from './Components/Header'
 import Footer from './Components/Footer'
+import { FaPlus } from 'react-icons/fa'
 
 const App = () => {
     const [todos, setTodos] = useState<Todos[]>([])
@@ -131,24 +142,36 @@ const App = () => {
         <Container>
             <GlobalStyles />
             <Header />
-            <div className="newJob">
+            <CreateNewJob>
                 <h2>Create New Job</h2>
-                <form onSubmit={handleSubmit(debounce(addTodo, 1000))}>
-                    <label htmlFor="jobName">Job Name</label>
-                    <input type="text" id="jobName" ref={inputTitle} />
-                    <label htmlFor="jobPriority">Job Priority</label>
-                    <select ref={inputPriority} id="jobPriority">
-                        <option value="">Choose</option>
-                        {priority &&
-                            priority.map((item) => (
-                                <option key={item?.value} value={item?.value}>
-                                    {item?.text}
-                                </option>
-                            ))}
-                    </select>
-                    <button type="submit">Create</button>
-                </form>
-            </div>
+                <GridTwo onSubmit={handleSubmit(debounce(addTodo, 1000))}>
+                    <JobName>
+                        <label htmlFor="jobName">Job Name</label>
+                        <Input type="text" id="jobName" ref={inputTitle} />
+                    </JobName>
+                    <div>
+                        <label htmlFor="jobPriority">Job Priority</label>
+                        <Select ref={inputPriority} id="jobPriority">
+                            <option value="">Choose</option>
+                            {priority &&
+                                priority.map((item) => (
+                                    <option
+                                        key={item?.value}
+                                        value={item?.value}
+                                    >
+                                        {item?.text}
+                                    </option>
+                                ))}
+                        </Select>
+                    </div>
+                    <div>
+                        <Button type="submit">
+                            <FaPlus />
+                            Create
+                        </Button>
+                    </div>
+                </GridTwo>
+            </CreateNewJob>
             <Table
                 todos={todos}
                 editTodo={editTodo}
