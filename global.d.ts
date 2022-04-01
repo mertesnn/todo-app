@@ -1,4 +1,5 @@
 type Todos = {
+    id: number
     title: string | undefined
     priority: string | undefined
 }
@@ -17,4 +18,8 @@ type TodoModalProps = {
     todos: Todos[]
     index: number
     modalPriority: LegacyRef<HTMLSelectElement> | undefined
+}
+
+type ComponentProps = {
+    align: string
 }

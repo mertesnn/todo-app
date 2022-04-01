@@ -1,11 +1,13 @@
-import { Grid, HorizontalLine } from 'src/Styles/Main'
+import { Divider, Typography } from '@mui/material'
 
 const Header = () => {
     return (
-        <Grid>
-            <h1>Logo</h1>
-            <HorizontalLine />
-        </Grid>
+        <>
+            <Typography variant="h3" mb="20px" pt="20px">
+                Personal Todo App
+            </Typography>
+            <Divider />
+        </>
     )
 }
 

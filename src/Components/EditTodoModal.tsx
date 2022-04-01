@@ -1,6 +1,10 @@
 import { priority } from 'src/Utils/Constants'
 
 const EditTodoModal = ({ todos, index, modalPriority }: TodoModalProps) => {
+    const getData = () => {
+        const result = todos.find((item) => item?.id === index)
+        return result
+    }
     return (
         <>
             <label
@@ -17,7 +21,7 @@ const EditTodoModal = ({ todos, index, modalPriority }: TodoModalProps) => {
                 disabled
                 style={{ margin: '0', width: '100%' }}
                 className="swal2-input"
-                value={todos[index]?.title}
+                value={getData()?.title}
             />
             <label
                 style={{
@@ -33,9 +37,9 @@ const EditTodoModal = ({ todos, index, modalPriority }: TodoModalProps) => {
                 className="swal2-input"
                 style={{ margin: '0', width: '100%' }}
                 defaultValue={
-                    todos[index]?.priority === '1'
+                    getData()?.priority === '1'
                         ? '1'
-                        : todos[index]?.priority === '2'
+                        : getData()?.priority === '2'
                         ? '2'
                         : '3'
                 }
