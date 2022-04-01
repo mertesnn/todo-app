@@ -1,44 +1,32 @@
 import { useEffect, useRef, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { compare, debounce, getTodos } from './Utils/Functions'
+import { compare, getTodos } from './Utils'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import EditTodoModal from './Components/EditTodoModal'
-import { priority } from './Utils/Constants'
 import Table from './Components/Table'
 import Header from './Components/Header'
 import Footer from './Components/Footer'
-import {
-    Container,
-    FormControl,
-    Grid,
-    InputLabel,
-    MenuItem,
-    Select,
-    TextField,
-    Typography,
-    Button,
-    SelectChangeEvent,
-} from '@mui/material'
-import { FaPlus } from 'react-icons/fa'
-import { GlobalStyles } from './Styles/Main'
+import { Container, SelectChangeEvent } from '@mui/material'
+import { GlobalStyles } from './Styles'
+import CreateNewTodo from './Components/CreateNewTodo'
 
 const App = () => {
     const [todos, setTodos] = useState<Todos[]>([])
     const [selectValue, setSelectValue] = useState<string>('')
+    const [priorityValue, setPriorityValue] = useState<string>('')
     const inputTitle = useRef<HTMLInputElement | null>(null)
     const inputPriority = useRef<HTMLSelectElement | null>(null)
     const modalPriority = useRef<HTMLSelectElement | null>(null)
     const searchByTitleInput = useRef<HTMLInputElement | null>(null)
     const searchByPriorityInput = useRef<HTMLSelectElement | null>(null)
-    const { handleSubmit } = useForm<Todos>()
+
     const MySwal = withReactContent(Swal)
 
     useEffect(() => {
         setTodos(getTodos())
     }, [])
 
-    const addTodo = () => {
+    const addTodo: Function = () => {
         const uniqueId = new Date().getTime()
         let insert: Todos[]
         if (todos) {
@@ -102,8 +90,8 @@ const App = () => {
         const allTodos: Todos[] = getTodos()
 
         const { value: formValues } = await MySwal.fire({
-            title: 'Job Edit',
-            width: '600px',
+            title: 'Todo Edit',
+            width: '900px',
             html: (
                 <EditTodoModal
                     todos={todos}
@@ -123,11 +111,13 @@ const App = () => {
             selectedPriority!.priority = formValues[0]
 
             // Clear inputs
-            if (inputTitle.current?.value) inputTitle.current.value = ''
-            if (selectValue) setSelectValue('')
+            if (searchByTitleInput.current?.value)
+                searchByTitleInput.current.value = ''
+            if (priorityValue) setPriorityValue('')
 
             setTodos(compare(allTodos))
             localStorage.setItem('todos', JSON.stringify(compare(allTodos)))
+
             await MySwal.fire({
                 title: 'Success',
                 text: 'Updated successfully!',
@@ -150,7 +140,7 @@ const App = () => {
         )
     }
 
-    const searchByPriority = (priority: string) => {
+    const searchByPriority: Function = (priority: string) => {
         const allTodos: Todos[] = getTodos()
 
         setTodos(
@@ -165,72 +155,32 @@ const App = () => {
         setSelectValue(event?.target?.value)
     }
 
+    const handlePriorityChange = (event: SelectChangeEvent) => {
+        setPriorityValue(event?.target?.value)
+        searchByPriority(event?.target?.value)
+    }
+
     return (
         <Container maxWidth="lg" style={{ height: '100vh' }}>
             <GlobalStyles />
             <Header />
-            <form onSubmit={handleSubmit(debounce(addTodo, 1000))}>
-                <Grid container spacing={2}>
-                    <Grid item xs={12} my="10px">
-                        <Typography variant="h5" component="h2">
-                            Create New Job
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={12} sm={8}>
-                        <TextField
-                            fullWidth
-                            label="Job Name"
-                            inputRef={inputTitle}
-                            required
-                        />
-                    </Grid>
-                    <Grid item xs={12} sm={2}>
-                        <FormControl fullWidth>
-                            <InputLabel id="jobPriorityLabel">
-                                Choose
-                            </InputLabel>
-                            <Select
-                                labelId="jobPriorityLabel"
-                                inputRef={inputPriority}
-                                label="Choose"
-                                value={selectValue}
-                                onChange={handleChange}
-                                required
-                            >
-                                {priority &&
-                                    priority.map((item) => (
-                                        <MenuItem
-                                            key={item?.value}
-                                            value={item?.value}
-                                        >
-                                            {item?.text}
-                                        </MenuItem>
-                                    ))}
-                            </Select>
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} sm={2} textAlign="right">
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            startIcon={<FaPlus />}
-                            size="large"
-                            style={{ height: '100%' }}
-                        >
-                            Create
-                        </Button>
-                    </Grid>
-                </Grid>
-            </form>
+            <CreateNewTodo
+                addTodo={addTodo}
+                inputTitle={inputTitle}
+                inputPriority={inputPriority}
+                selectValue={selectValue}
+                handleChange={handleChange}
+            />
 
             <Table
                 todos={todos}
                 editTodo={editTodo}
                 removeTodo={removeTodo}
-                searchByPriority={searchByPriority}
                 searchByPriorityInput={searchByPriorityInput}
                 searchByTitle={searchByTitle}
                 searchByTitleInput={searchByTitleInput}
+                priorityValue={priorityValue}
+                handlePriority={handlePriorityChange}
             />
             <Footer />
         </Container>

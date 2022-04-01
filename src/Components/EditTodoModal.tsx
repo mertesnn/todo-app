@@ -1,4 +1,4 @@
-import { priority } from 'src/Utils/Constants'
+import { priority } from 'src/Constants'
 
 const EditTodoModal = ({ todos, index, modalPriority }: TodoModalProps) => {
     const getData = () => {
@@ -14,7 +14,7 @@ const EditTodoModal = ({ todos, index, modalPriority }: TodoModalProps) => {
                 }}
                 className="swal2-input-label"
             >
-                Job Name
+                Title
             </label>
             <input
                 type="text"
@@ -30,7 +30,7 @@ const EditTodoModal = ({ todos, index, modalPriority }: TodoModalProps) => {
                 }}
                 className="swal2-input-label"
             >
-                Job Priority
+                Priority
             </label>
             <select
                 ref={modalPriority}

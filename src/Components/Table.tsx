@@ -1,5 +1,4 @@
 import {
-    Chip,
     FormControl,
     Grid,
     IconButton,
@@ -8,7 +7,6 @@ import {
     MenuItem,
     Paper,
     Select,
-    SelectChangeEvent,
     Table as TableMui,
     TableBody,
     TableCell,
@@ -19,10 +17,10 @@ import {
     Tooltip,
     Typography,
 } from '@mui/material'
-import { useState } from 'react'
 import { FaPencilAlt, FaSearch, FaTrashAlt } from 'react-icons/fa'
-import { priority } from 'src/Utils/Constants'
-import { debounce } from 'src/Utils/Functions'
+import { priority } from 'src/Constants'
+import { debounce } from 'src/Utils'
+import Chips from './Chips'
 
 const Table = ({
     todos,
@@ -31,24 +29,18 @@ const Table = ({
     searchByTitleInput,
     searchByPriorityInput,
     searchByTitle,
-    searchByPriority,
+    priorityValue,
+    handlePriority,
 }: TableProps) => {
-    const [selectValue, setSelectValue] = useState<string>('')
-
-    const handleChange = (event: SelectChangeEvent) => {
-        setSelectValue(event?.target?.value)
-        debounce(searchByPriority(event?.target?.value), 1000)
-    }
     return (
         <>
             <Typography variant="h5" my="20px">
-                Job List
+                Todo List
             </Typography>
             <Grid container spacing={2} mb="20px">
-                <Grid item sm={9}>
+                <Grid item xs={12} sm={9}>
                     <TextField
                         fullWidth
-                        label="Job Name"
                         placeholder="Search"
                         InputProps={{
                             startAdornment: (
@@ -61,17 +53,17 @@ const Table = ({
                         onChange={debounce(searchByTitle, 1000)}
                     />
                 </Grid>
-                <Grid item sm={3}>
+                <Grid item xs={12} sm={3}>
                     <FormControl fullWidth>
-                        <InputLabel id="jobPriorityLabel">
+                        <InputLabel id="todoPriorityLabel">
                             Priority (All)
                         </InputLabel>
                         <Select
-                            labelId="jobPriorityLabel"
+                            labelId="todoPriorityLabel"
                             inputRef={searchByPriorityInput}
                             label="Priority (All)"
-                            value={selectValue}
-                            onChange={handleChange}
+                            value={priorityValue}
+                            onChange={handlePriority}
                         >
                             <MenuItem value="">Priority (All)</MenuItem>
                             {priority &&
@@ -116,34 +108,19 @@ const Table = ({
                                     </TableCell>
                                     <TableCell align="right">
                                         {item?.priority === '1' ? (
-                                            <Chip
+                                            <Chips
                                                 color="error"
                                                 label="Urgent"
-                                                style={{
-                                                    borderRadius: '5px',
-                                                    fontWeight: 'bold',
-                                                    width: '80px',
-                                                }}
                                             />
                                         ) : item?.priority === '2' ? (
-                                            <Chip
+                                            <Chips
                                                 color="warning"
                                                 label="Regular"
-                                                style={{
-                                                    borderRadius: '5px',
-                                                    fontWeight: 'bold',
-                                                    width: '80px',
-                                                }}
                                             />
                                         ) : (
-                                            <Chip
+                                            <Chips
                                                 color="primary"
                                                 label="Trivial"
-                                                style={{
-                                                    borderRadius: '5px',
-                                                    fontWeight: 'bold',
-                                                    width: '80px',
-                                                }}
                                             />
                                         )}
                                     </TableCell>

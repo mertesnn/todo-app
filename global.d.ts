@@ -11,7 +11,8 @@ type TableProps = {
     searchByTitleInput: LegacyRef<HTMLInputElement> | undefined
     searchByPriorityInput: LegacyRef<HTMLSelectElement> | undefined
     searchByTitle: Function
-    searchByPriority: Function
+    priorityValue: any
+    handlePriority: any
 }
 
 type TodoModalProps = {
@@ -20,6 +21,15 @@ type TodoModalProps = {
     modalPriority: LegacyRef<HTMLSelectElement> | undefined
 }
 
-type ComponentProps = {
-    align: string
+type ChipProps = {
+    color: 'primary' | 'error' | 'warning'
+    label: string
+}
+
+type CreateNewTodoProps = {
+    addTodo: any
+    inputTitle: LegacyRef<HTMLInputElement> | undefined
+    inputPriority: LegacyRef<HTMLSelectElement> | undefined
+    selectValue: any
+    handleChange: any
 }
