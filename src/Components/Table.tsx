@@ -212,7 +212,7 @@ const Table = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {todo &&
+                        {todo[0] ? (
                             todo.map((item) => (
                                 <TableRow key={item?.id}>
                                     <TableCell component="th" scope="row">
@@ -261,7 +261,12 @@ const Table = () => {
                                         </Tooltip>
                                     </TableCell>
                                 </TableRow>
-                            ))}
+                            ))
+                        ) : (
+                            <TableRow>
+                                <TableCell colSpan={3}>No Data</TableCell>
+                            </TableRow>
+                        )}
                     </TableBody>
                 </TableMui>
             </TableContainer>
