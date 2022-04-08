@@ -1,10 +1,8 @@
 import { priority } from 'src/Constants'
 
 const EditTodoModal = ({ todos, index, modalPriority }: TodoModalProps) => {
-    const getData = () => {
-        const result = todos.find((item) => item?.id === index)
-        return result
-    }
+    const getData = () => todos && todos.find((item) => item?.id === index)
+
     return (
         <>
             <label

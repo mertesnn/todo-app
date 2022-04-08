@@ -4,17 +4,6 @@ type Todos = {
     priority: string | undefined
 }
 
-type TableProps = {
-    todos: Todos[]
-    editTodo: Function
-    removeTodo: Function
-    searchByTitleInput: LegacyRef<HTMLInputElement> | undefined
-    searchByPriorityInput: LegacyRef<HTMLSelectElement> | undefined
-    searchByTitle: Function
-    priorityValue: any
-    handlePriority: any
-}
-
 type TodoModalProps = {
     todos: Todos[]
     index: number
@@ -26,10 +15,12 @@ type ChipProps = {
     label: string
 }
 
-type CreateNewTodoProps = {
-    addTodo: any
-    inputTitle: LegacyRef<HTMLInputElement> | undefined
-    inputPriority: LegacyRef<HTMLSelectElement> | undefined
-    selectValue: any
-    handleChange: any
+type CreateNewTodoData = {
+    id: number
+    title: string | undefined
+    priority: string | undefined
+}
+
+type TodoState = {
+    value: Todos[]
 }
