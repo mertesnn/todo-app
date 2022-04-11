@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'src/store'
 import { setTodo } from 'src/Redux/todo'
 import { compare } from 'src/Utils'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 const CreateNewTodo = () => {
     const [selectValue, setSelectValue] = useState<string>('')
@@ -55,7 +55,6 @@ const CreateNewTodo = () => {
         localStorage.setItem('todos', JSON.stringify(compare(insert)))
 
         // Clear inputs
-        if (inputTitle.current?.value) inputTitle.current.value = ''
         if (selectValue) setSelectValue('')
     }
 
@@ -66,10 +65,18 @@ const CreateNewTodo = () => {
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        reset,
+        formState: { errors, isSubmitSuccessful },
     } = useForm<Todos>({
         resolver: yupResolver(createNewTodoSchema),
     })
+
+    useEffect(() => {
+        reset({
+            title: '',
+            priority: '',
+        })
+    }, [isSubmitSuccessful, reset])
 
     return (
         <form
