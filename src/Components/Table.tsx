@@ -212,7 +212,7 @@ const Table = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {todo[0] ? (
+                        {todo ? (
                             todo.map((item) => (
                                 <TableRow key={item?.id}>
                                     <TableCell component="th" scope="row">
